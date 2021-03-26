@@ -1,0 +1,42 @@
+plugins {
+	id 'org.springframework.boot' version '2.4.4'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'groovy'
+}
+
+group = 'com.feign'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	// Spock releases are available from Maven Central
+	mavenCentral()
+	// Spock snapshots are available from the Sonatype OSS snapshot repository
+	maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+ext {
+	set('springCloudVersion', "2020.0.2")
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// mandatory dependencies for using Spock
+	compile "org.codehaus.groovy:groovy:3.0.7"
+	testCompile platform("org.spockframework:spock-bom:2.0-M4-groovy-3.0")
+	testCompile "org.spockframework:spock-core"
+	testCompile "org.spockframework:spock-spring"
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+test {
+	useJUnitPlatform()
+}
